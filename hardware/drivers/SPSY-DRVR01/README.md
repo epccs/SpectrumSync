@@ -16,7 +16,7 @@ Adafruit Neopixel library might also work (e.g., Arduino "Adafruit_NeoPixel leds
 
 ## BOM (from KiCad iBOM plugin)
 
-<./ibom.html>
+<https://htmlpreview.github.io/?https://github.com/epccs/SpectrumSync/blob/main/hardware/drivers/SPSY-DRVR01/ibom.html>
 
 ## Open Hardware Licensing Recommendations
 
