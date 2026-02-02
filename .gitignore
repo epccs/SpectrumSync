@@ -1,0 +1,17 @@
+# KiCad temporary and backup files
+**/fp-info-cache
+**/fabrication-toolkit-options.json
+**/*.bak
+**/*.kicad_pcb-bak
+**/*.kicad_sch-bak
+**/*.lck
+**/_autosave-*
+**/_log
+
+# KiCad 7+ Project Backups
+**/*-backups/
+
+# Output directories (Optional)
+**/plots/
+**/gerbers/
+**/production/
