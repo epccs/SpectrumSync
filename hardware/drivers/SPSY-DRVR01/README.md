@@ -18,6 +18,14 @@ Adafruit Neopixel library might also work (e.g., Arduino "Adafruit_NeoPixel leds
 
 <https://htmlpreview.github.io/?https://github.com/epccs/SpectrumSync/blob/main/hardware/drivers/SPSY-DRVR01/ibom.html>
 
+## PCB-002A top side
+
+![PCB-002A top side](PCB-002A_top.png)
+
+## PCB-002A bottom side
+
+![PCB-002A bottom side](PCB-002A_bottom.png)
+
 ## Open Hardware Licensing Recommendations
 
 <https://gemini.google.com/share/2dea24fdcb34>
