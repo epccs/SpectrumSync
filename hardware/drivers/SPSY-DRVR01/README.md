@@ -10,7 +10,7 @@ The FastLED library for colored LED animation might work with it (TBD.)
 
 Adafruit Neopixel library might also work (e.g., Arduino "Adafruit_NeoPixel leds(NUMPIXELS, PIN, NEO_GRBW + NEO_KHZ800);")
 
-## Schatic
+## Schematic
 
 <./SPSY-DRVR01-sch.pdf>
 
