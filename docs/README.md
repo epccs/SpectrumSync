@@ -6,7 +6,7 @@ This folder contains the documentation
 
 This is the wiring I am currently working on.
 
-<./Wiring-SPSY-CREE-XNP_to_SPSY-DRVR01/Wiring-SPSY-CREE-XNP_to_SPSY-DRVR01.pdf>
+[Wiring diagram (PDF)](Wiring-SPSY-CREE-XNP_to_SPSY-DRVR01/Wiring-SPSY-CREE-XNP_to_SPSY-DRVR01.pdf)
 
 ## ToDo
 

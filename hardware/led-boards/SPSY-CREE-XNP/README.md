@@ -8,7 +8,7 @@ A current source is needed to drive a constant current through the string of fou
 
 ## Schematic
 
-<./SPSY-CREE-XNP-sch.pdf>
+[Schematic](SPSY-CREE-XNP-sch.pdf)
 
 ## BOM (from KiCad iBOM plugin)
 

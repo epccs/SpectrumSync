@@ -27,4 +27,4 @@ examples/                        # e.g., "4-port loop tutorial"
 
 ## Open Hardware Licensing Recommendations
 
-<https://gemini.google.com/share/2dea24fdcb34>
+[Open Hardware Licensing Recommendation](https://gemini.google.com/share/2dea24fdcb34)

@@ -12,7 +12,7 @@ Adafruit Neopixel library might also work (e.g., Arduino "Adafruit_NeoPixel leds
 
 ## Schematic
 
-<./SPSY-DRVR01-sch.pdf>
+[Schematic](SPSY-DRVR01-sch.pdf)
 
 ## BOM (from KiCad iBOM plugin)
 
