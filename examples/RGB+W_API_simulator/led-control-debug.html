@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LED Strip Debug Control</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        
+        .container {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        h1 {
+            color: #333;
+            margin-top: 0;
+        }
+        
+        .section {
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .section:last-child {
+            border-bottom: none;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #555;
+        }
+        
+        input[type="text"],
+        input[type="number"] {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+            font-size: 14px;
+        }
+        
+        .color-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+        
+        .color-input {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .color-input label {
+            font-size: 12px;
+            margin-bottom: 3px;
+        }
+        
+        .color-preview {
+            width: 100%;
+            height: 60px;
+            border: 2px solid #ddd;
+            border-radius: 4px;
+            margin-bottom: 15px;
+        }
+        
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            width: 100%;
+            margin-bottom: 10px;
+        }
+        
+        button:hover {
+            background-color: #45a049;
+        }
+        
+        button.secondary {
+            background-color: #2196F3;
+        }
+        
+        button.secondary:hover {
+            background-color: #0b7dda;
+        }
+        
+        button.danger {
+            background-color: #f44336;
+        }
+        
+        button.danger:hover {
+            background-color: #da190b;
+        }
+        
+        .response {
+            margin-top: 15px;
+            padding: 10px;
+            border-radius: 4px;
+            font-family: monospace;
+            font-size: 12px;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+        
+        .response.success {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        
+        .response.error {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        
+        .slider-group {
+            margin-bottom: 15px;
+        }
+        
+        .slider-group label {
+            display: flex;
+            justify-content: space-between;
+        }
+        
+        input[type="range"] {
+            width: 100%;
+            margin-top: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎨 LED Strip Debug Control</h1>
+        
+        <!-- API URL Configuration -->
+        <div class="section">
+            <h2>API Configuration</h2>
+            <label for="apiUrl">API Base URL:</label>
+            <input type="text" id="apiUrl" value="http://localhost:8080">
+        </div>
+        
+        <!-- Solid Color Control -->
+        <div class="section">
+            <h2>Solid Color Control</h2>
+            
+            <label>Animation ID:</label>
+            <input type="text" id="animId" value="debug-color" placeholder="Animation ID">
+            
+            <label>Animation Name:</label>
+            <input type="text" id="animName" value="Debug Color" placeholder="Animation Name">
+            
+            <div class="color-grid">
+                <div class="color-input">
+                    <label for="red">Red (0-255)</label>
+                    <input type="number" id="red" min="0" max="255" value="255">
+                </div>
+                <div class="color-input">
+                    <label for="green">Green (0-255)</label>
+                    <input type="number" id="green" min="0" max="255" value="0">
+                </div>
+                <div class="color-input">
+                    <label for="blue">Blue (0-255)</label>
+                    <input type="number" id="blue" min="0" max="255" value="0">
+                </div>
+                <div class="color-input">
+                    <label for="white">White (0-255)</label>
+                    <input type="number" id="white" min="0" max="255" value="0">
+                </div>
+            </div>
+            
+            <label>Color Preview:</label>
+            <div class="color-preview" id="colorPreview"></div>
+            
+            <button onclick="createAndStartColor()">Create & Start Animation</button>
+            <div id="colorResponse" class="response" style="display:none;"></div>
+        </div>
+        
+        <!-- Playback Controls -->
+        <div class="section">
+            <h2>Playback Controls</h2>
+            
+            <div class="slider-group">
+                <label>
+                    <span>Brightness:</span>
+                    <span id="brightnessValue">100%</span>
+                </label>
+                <input type="range" id="brightness" min="0" max="100" value="100" oninput="updateBrightnessLabel()">
+            </div>
+            
+            <div class="slider-group">
+                <label>
+                    <span>Speed:</span>
+                    <span id="speedValue">1.0x</span>
+                </label>
+                <input type="range" id="speed" min="1" max="50" value="10" oninput="updateSpeedLabel()">
+            </div>
+            
+            <button onclick="setBrightness()" class="secondary">Update Brightness</button>
+            <button onclick="setSpeed()" class="secondary">Update Speed</button>
+            <button onclick="stopPlayback()" class="danger">Stop Animation</button>
+            <div id="playbackResponse" class="response" style="display:none;"></div>
+        </div>
+        
+        <!-- Built-in Animations -->
+        <div class="section">
+            <h2>Quick Start Built-in Animations</h2>
+            <button onclick="startAnimation('off')" class="secondary">Off</button>
+            <button onclick="startAnimation('warm-white')" class="secondary">Warm White</button>
+            <button onclick="startAnimation('cool-white')" class="secondary">Cool White</button>
+            <button onclick="startAnimation('rainbow')" class="secondary">Rainbow</button>
+            <button onclick="startAnimation('chase-red')" class="secondary">Red Chase</button>
+            <div id="builtinResponse" class="response" style="display:none;"></div>
+        </div>
+        
+        <!-- Status -->
+        <div class="section">
+            <h2>System Status</h2>
+            <button onclick="getStatus()" class="secondary">Get Status</button>
+            <div id="statusResponse" class="response" style="display:none;"></div>
+        </div>
+    </div>
+
+    <script>
+        // Update color preview
+        function updateColorPreview() {
+            const r = parseInt(document.getElementById('red').value) || 0;
+            const g = parseInt(document.getElementById('green').value) || 0;
+            const b = parseInt(document.getElementById('blue').value) || 0;
+            const w = parseInt(document.getElementById('white').value) || 0;
+            
+            // Approximate the visual appearance with white channel
+            const wr = Math.min(255, r + w);
+            const wg = Math.min(255, g + w);
+            const wb = Math.min(255, b + w);
+            
+            document.getElementById('colorPreview').style.backgroundColor = 
+                `rgb(${wr}, ${wg}, ${wb})`;
+        }
+        
+        // Update brightness label
+        function updateBrightnessLabel() {
+            const value = document.getElementById('brightness').value;
+            document.getElementById('brightnessValue').textContent = value + '%';
+        }
+        
+        // Update speed label
+        function updateSpeedLabel() {
+            const value = document.getElementById('speed').value;
+            const speed = (value / 10).toFixed(1);
+            document.getElementById('speedValue').textContent = speed + 'x';
+        }
+        
+        // Add event listeners to update preview
+        ['red', 'green', 'blue', 'white'].forEach(id => {
+            document.getElementById(id).addEventListener('input', updateColorPreview);
+        });
+        
+        // Initialize preview
+        updateColorPreview();
+        
+        // Get API base URL
+        function getApiUrl() {
+            return document.getElementById('apiUrl').value;
+        }
+        
+        // Show response
+        function showResponse(elementId, data, isError = false) {
+            const element = document.getElementById(elementId);
+            element.textContent = JSON.stringify(data, null, 2);
+            element.className = isError ? 'response error' : 'response success';
+            element.style.display = 'block';
+        }
+        
+        // Create and start color animation
+        async function createAndStartColor() {
+            const animId = document.getElementById('animId').value;
+            const animName = document.getElementById('animName').value;
+            const r = parseInt(document.getElementById('red').value) || 0;
+            const g = parseInt(document.getElementById('green').value) || 0;
+            const b = parseInt(document.getElementById('blue').value) || 0;
+            const w = parseInt(document.getElementById('white').value) || 0;
+            
+            try {
+                // Create animation
+                const createResponse = await fetch(`${getApiUrl()}/animations`, {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({
+                        id: animId,
+                        name: animName,
+                        description: `RGBW: [${r}, ${g}, ${b}, ${w}]`,
+                        type: 'solid',
+                        color: [r, g, b, w]
+                    })
+                });
+                
+                const createData = await createResponse.json();
+                
+                if (!createResponse.ok) {
+                    showResponse('colorResponse', createData, true);
+                    return;
+                }
+                
+                // Start animation
+                const startResponse = await fetch(`${getApiUrl()}/playback/start`, {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({animation_id: animId})
+                });
+                
+                const startData = await startResponse.json();
+                
+                if (!startResponse.ok) {
+                    showResponse('colorResponse', startData, true);
+                    return;
+                }
+                
+                showResponse('colorResponse', {
+                    created: createData,
+                    started: startData
+                });
+                
+            } catch (error) {
+                showResponse('colorResponse', {error: error.message}, true);
+            }
+        }
+        
+        // Start built-in animation
+        async function startAnimation(animId) {
+            try {
+                const response = await fetch(`${getApiUrl()}/playback/start`, {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({animation_id: animId})
+                });
+                
+                const data = await response.json();
+                showResponse('builtinResponse', data, !response.ok);
+                
+            } catch (error) {
+                showResponse('builtinResponse', {error: error.message}, true);
+            }
+        }
+        
+        // Set brightness
+        async function setBrightness() {
+            const brightness = parseInt(document.getElementById('brightness').value) / 100;
+            
+            try {
+                const response = await fetch(`${getApiUrl()}/playback/brightness`, {
+                    method: 'PUT',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({brightness: brightness})
+                });
+                
+                const data = await response.json();
+                showResponse('playbackResponse', data, !response.ok);
+                
+            } catch (error) {
+                showResponse('playbackResponse', {error: error.message}, true);
+            }
+        }
+        
+        // Set speed
+        async function setSpeed() {
+            const speed = parseInt(document.getElementById('speed').value) / 10;
+            
+            try {
+                const response = await fetch(`${getApiUrl()}/playback/speed`, {
+                    method: 'PUT',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({speed: speed})
+                });
+                
+                const data = await response.json();
+                showResponse('playbackResponse', data, !response.ok);
+                
+            } catch (error) {
+                showResponse('playbackResponse', {error: error.message}, true);
+            }
+        }
+        
+        // Stop playback
+        async function stopPlayback() {
+            try {
+                const response = await fetch(`${getApiUrl()}/playback/stop`, {
+                    method: 'POST'
+                });
+                
+                const data = await response.json();
+                showResponse('playbackResponse', data, !response.ok);
+                
+            } catch (error) {
+                showResponse('playbackResponse', {error: error.message}, true);
+            }
+        }
+        
+        // Get status
+        async function getStatus() {
+            try {
+                const response = await fetch(`${getApiUrl()}/status`);
+                const data = await response.json();
+                showResponse('statusResponse', data, !response.ok);
+                
+            } catch (error) {
+                showResponse('statusResponse', {error: error.message}, true);
+            }
+        }
+    </script>
+</body>
+</html>
