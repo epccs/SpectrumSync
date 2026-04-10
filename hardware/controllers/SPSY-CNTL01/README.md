@@ -4,7 +4,7 @@ LED RGB+W Control System with API interface.
 
 ## Details
 
-First, a little rant: No one wants a phone app or remote to control their lights. More than a few of us are looking at things like OpenClaw and thinking this is the future of automation, though we also see the security issues. The truth is, I don't want the OpenClaw next door fiddling with my lights, nor do I want the one I use fiddling with their stuff. Regardless, for now, it is easy enough to have an AI write HTML and JS (or Python) that can operate the API while we let OpenClaw (and ilk) become safe.
+First, a little rant: I do not want a phone app or handheld remote to control my lights. More than a few of us are looking at things like OpenClaw and thinking this is the future of automation, though we also see the security issues. For now, it's straightforward to have an AI write something that can operate an API while we let OpenClaw (and similar) become safe.
 
 ## Schematic
 
@@ -24,7 +24,15 @@ First, a little rant: No one wants a phone app or remote to control their lights
 
 ## Power
 
-The main power input can operate from 9 to 53V, which means a 48V battery won't have enough margin to support charging voltages, but well-regulated 48V supplies are good. Heavy equipment often has 24V alternators that clamp at about 65V (ISO 16750-2), and our little local clamp (TVS) shouldn't try to take over the alternators job (ours should act weakly, if at all, on it). A 1.5SMB56CA will let a 1 mA test current pass at 53V and allow gradually increasing current pulses up to 77V (about 20A), at which point it goes outside its limits. The rate of increase is an exponential, like the diode I-V equation, so it will not take over from the alternator's internal clamp but there is not much margine. Do not use this controller with power systems that lack load-dump clamps, whether 24V or 12V, as they will damage the controller's electronics.
+The main power input can operate from $15\text{V}$ to $53\text{V}$ Volts, which means a $48\text{V}$ battery won't have enough margin to support its charging voltages, but a well-regulated $48\text{V}$ supply is good. Heavy equipment often has $24\text{V}$ alternators with an internal diversion that clamps at about $65\text{V}$ (ISO 16750-2). Our little local surge clamp (TVS) shouldn't try to take over the alternator's job (ours should act weakly, if at all, at $65\text{V}$). A 1.5SMB56CA will let a $1\text{ mA}$ test current pass at $53\text{V}$ and allow expontualy more (following a diode curve) current pulses up to $77\text{V}$ (about $20\text{A}$), at which point it goes outside its limits. The rate of increase is like the diode I-V equation.
+
+$$I = I_s (e^{\frac{V}{nV_T}} - 1)$$
+
+It will not take over from the alternator's internal clamp, but there is not much margin. There is a little shortcut To approximate the $65\text{V}$ value using the geometric mean of $1\text{ mA}$ and $20,000\text{ mA}$ since it is equal distant from $77\text{V}$ and $53\text{V}$:
+
+$$\sqrt{1^2 + 20000^2} \approx 141\text{ mA}$$
+
+> **Warning:** Do not use this controller with power systems that lack load-dump clamps, as transients will damage the electronics.
 
 ## Internal Communication
 
