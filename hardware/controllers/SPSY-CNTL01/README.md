@@ -22,6 +22,10 @@ First, a little rant: I do not want a phone app or handheld remote to control my
 
 ![PCB-003A bottom side](PCB-003A_bottom.png)
 
+## PCB-003A layout
+
+![PCB-003A layout](PCB-003A_layout.png)
+
 ## Power
 
 The main power input can operate from $15\text{V}$ to $53\text{V}$ Volts, which means a $48\text{V}$ battery won't have enough margin to support its charging voltages, but a well-regulated $48\text{V}$ supply is good. Heavy equipment often has $24\text{V}$ alternators with an internal diversion that clamps at about $65\text{V}$ (ISO 16750-2). Our little local surge clamp (TVS) shouldn't try to take over the alternator's job (ours should act weakly, if at all, at $65\text{V}$. A 1.5SMB56CA will let a $1\text{ mA}$ test current pass at $53\text{V}$ and allow expontualy more (following a diode curve) current pulses up to $77\text{V}$ (about $20\text{A}$), at which point it goes outside its limits. The rate of increase is like the diode I-V equation.
@@ -32,13 +36,17 @@ It will not take over from the alternator's internal clamp, but there is not muc
 
 $$\sqrt{1^2 + 20000^2} \approx 141\text{ mA}$$
 
-> **Warning:** Do not use this controller with power systems that lack load-dump clamps, as transients will damage the electronics.
+> **Warning:** Do not use this controller with alternator-based power systems that lack load-dump protection, as the TVS is insufficient to handle the inductive kickback.
 
 ## Internal Communication
 
-There is a pair of microcontrolers, one is for managing power to the single board computer (SBC) as well as programing the other microcontroler for applications. The SBC is optianl, if present it could be a Raspery Pi Zero 2 running the Pi OS.
+There is a pair of microcontrolers, one is for managing power to the single board computer (SBC) as well as programing the other microcontroler for applications. The SBC is optianl, if present it could be a "Raspery Pi Zero 2 W" running the Pi OS.
 
-The Applicaiton microcontroler (MCU) has an I2C interface with the manager MCU as well as a UART interface to the multi-drop RS422 (full duplex). It is programed over the Microchip UPDI interface which can be selected by the Manager to operate over RS422 with a local or rmote SBC host. If the SBC is a remote board it will need to use the Manager on that board as well as the manager on the target to setup the RS422 as a point to point connection that goes into the UPDI port of the target Applicaiton microcontroler to be programmed. It is more or less the same if a local SBC host is to program the Application MCU on its local board, but only one manager is involved.
+The Applicaiton microcontroler (MCU) has two I2C interfaces with the manager MCU and headers (J5 and J4) as well as a UART interface to the multi-drop RS422 (J14 and J15). It is programed over the its UPDI interface which can be selected by the Manager to operate over the RS422 multi-drop with a local or remote SBC host. If the SBC is a remote board SBC on it will need to use the Manager (TBD/SMBUS) on that board to tell the manager on the target to setup the RS422 in a point to point connection that goes into the targets UPDI port of Applicaiton microcontroler. It is more or less the same if a local SBC host is to program the Application MCU on its local board, but only one manager is involved.
+
+The Manager microcontroler can be programed with a locolal SBC only (i.e., not over the RS422 multi-drop.) To do this the SBC pulls BCM24 high and uses the Microchip Python utility for programming these devices "pymcuprog".
+
+- <https://github.com/microchip-pic-avr-tools/pymcuprog>
 
 ## History
 
