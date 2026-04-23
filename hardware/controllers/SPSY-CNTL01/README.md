@@ -44,7 +44,7 @@ There is a pair of microcontrolers, one is for managing power to the single boar
 
 The Applicaiton microcontroler (MCU) has two I2C interfaces with the manager MCU and headers (J5 and J4) as well as a UART interface to the multi-drop RS422 (J14 and J15). It is programed over the its UPDI interface which can be selected by the Manager to operate over the RS422 multi-drop with a local or remote SBC host. If the SBC is a remote board SBC on it will need to use the Manager (TBD/SMBUS) on that board to tell the manager on the target to setup the RS422 in a point to point connection that goes into the targets UPDI port of Applicaiton microcontroler. It is more or less the same if a local SBC host is to program the Application MCU on its local board, but only one manager is involved.
 
-The Manager microcontroler can be programed with a locolal SBC only (i.e., not over the RS422 multi-drop.) To do this the SBC pulls BCM24 high and uses the Microchip Python utility for programming these devices "pymcuprog".
+The Manager microcontroler can be programed with a local SBC only (i.e., not over the RS422 multi-drop.) To do this the SBC pulls BCM24 high and uses the Microchip Python utility for programming these devices "pymcuprog".
 
 - <https://github.com/microchip-pic-avr-tools/pymcuprog>
 
