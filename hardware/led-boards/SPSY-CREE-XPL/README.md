@@ -1,6 +1,6 @@
-# SpectrumSync SPSY-CREE-XNP
+# SpectrumSync SPSY-CREE-XPL
 
-Insulated Metal Substrate (IMS) board with a Cree XP-N RGB+W and P-channel MOSFET (PMOS) bypass (or shunt) for a controller to operate with the pull down pads: GN1, PC1, RD1, and BL1.
+Insulated Metal Substrate (IMS) board with a Cree XP-L RGB+W and P-channel MOSFET (PMOS) bypass (or shunt) for a controller to operate with the pull down pads: GN1, PC1, RD1, and BL1.
 
 ## Details
 
@@ -14,9 +14,9 @@ A current driver is needed to deliver a constant current through the string of f
 
 <https://htmlpreview.github.io/?https://github.com/epccs/SpectrumSync/blob/main/hardware/led-boards/SPSY-CREE-XPL/ibom.html>
 
-## PCB-001A top side
+## PCB-004A top side
 
-![PCB-001A top side](PCB-004A_top.png)
+![PCB-004A top side](PCB-004A_top.png)
 
 ## Notes
 
