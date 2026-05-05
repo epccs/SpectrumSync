@@ -4,7 +4,7 @@ LED RGB+W Control System with API interface.
 
 ## Details
 
-First, a little rant: I do not want a phone app or handheld remote to control my lights. More than a few of us are looking at things like OpenClaw and thinking this is the future of automation, though we also see the security issues. For now, it's straightforward to have an AI write something that can operate an API while we let OpenClaw (and similar) become safe.
+First, a little rant: I do not want a phone app or handheld remote to control my lights. I want an API or MCP server that an AI can operate so I can ask an AI to control these things.
 
 ## Schematic
 
@@ -17,6 +17,8 @@ First, a little rant: I do not want a phone app or handheld remote to control my
 ## PCB-003A top side
 
 ![PCB-003A top side](PCB-003A_top.png)
+
+> **Note:** A R-pi 5 is shown in image since the R-pi foundation has a STEP model for it, unfortunaly this board will not power an R-pi 5.
 
 ## PCB-003A bottom side
 
