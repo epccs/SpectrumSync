@@ -13,3 +13,7 @@ This repo's name https://github.com/epccs/SpectrumSync. It is a public-facing pa
 ## Editing guidance
 
 - Spelling and grammar need to support open hardware for a wide audience.
+
+## Environment
+
+- Dev machine runs Ubuntu 24.04 (noble), edited in VSCode.
